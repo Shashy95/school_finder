@@ -16,8 +16,6 @@ class SchoolController extends Controller
     //
     public function index()
     {
-        $language = request()->session()->get('language', 'en');
-
         $regions = Region::all();
         $genders = Gender::all();
         $levels = Level::all();
@@ -25,7 +23,6 @@ class SchoolController extends Controller
         $categories = Category::all();
 
         return Inertia::render('Home', [
-            'language' => $language,
             'regions' => $regions,
             'genders' => $genders,
             'levels' => $levels,
@@ -77,17 +74,5 @@ class SchoolController extends Controller
         $school = School::where('slug', $slug)->firstOrFail();
         return Inertia::render('Schools/Detail', ['school' => $school]);
     }
-    public function setLanguage(Request $request)
-    {
-        // Validate the language input
-        $validatedData = $request->validate([
-            'language' => 'in:en,sw'
-        ]);
-
-        // Store language in session
-        $request->session()->put('language', $validatedData['language']);
-
-        // Return back to the same page
-        return back();
-    }
+   
 }

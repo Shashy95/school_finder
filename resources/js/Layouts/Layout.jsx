@@ -1,18 +1,6 @@
 import React from 'react';
-import { router } from '@inertiajs/react';
 
-const Layout = ({ children, page }) => {
-    // Get language from page props
-    const language = page?.props?.language || 'en';
-
-    // Function to switch language
-    const switchLanguage = (lang) => {
-        router.post('/set-language', { language: lang }, {
-            preserveState: true,
-            preserveScroll: true,
-        });
-    };
-
+const Layout = ({ children, language, switchLanguage }) => {
     return (
         <div>
             {/* Language Switcher */}
@@ -31,8 +19,8 @@ const Layout = ({ children, page }) => {
                 </button>
             </div>
 
-            {/* Render children */}
-            {children}
+            {/* Main Content */}
+            <div>{children}</div>
         </div>
     );
 };

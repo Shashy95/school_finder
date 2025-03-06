@@ -9,8 +9,6 @@ use Inertia\Inertia;
 Route::get('/', [SchoolController::class, 'index'])->name('home');
 Route::get('/schools', [SchoolController::class, 'list'])->name('schools.list');
 Route::get('/schools/{slug}', [SchoolController::class, 'show'])->name('schools.show');
-Route::post('/set-language', [SchoolController::class, 'setLanguage'])->name('set.language');
-
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
