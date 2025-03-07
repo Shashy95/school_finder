@@ -1,137 +1,228 @@
+// Home.jsx
 import React, { useEffect } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { useLanguage } from '@/Components/LanguageContext';
 
 const Home = ({ regions, genders, levels, types, categories }) => {
+  const { language, translate } = useLanguage();
 
-    const { language, translate  } = useLanguage();
+  const { data, setData, get, processing } = useForm({
+    name: '',
+    region: '',
+    type: '',
+    gender: '',
+    level: '',
+    category: ''
+  });
 
-    const { data, setData, get, processing } = useForm({
-        name: '',
-        region: '',
-        type: '',
-        gender: '',
-        level: '',
-        category: ''
+  const getLocalizedValue = (item, field) => {
+    return language === 'sw' ? item[`${field}_sw`] : item[`${field}_en`];
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    get('/schools'); // Redirects to search results page
+  };
+
+  const handleClear = () => {
+    setData({
+      name: '',
+      region: '',
+      type: '',
+      gender: '',
+      level: '',
+      category: ''
     });
+  };
 
-    const getLocalizedValue = (item, field) => {
-        return language === 'sw' ? item[`${field}_sw`] : item[`${field}_en`];
-    };
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        get('/schools'); // Redirects to search results page
-    };
-
-    return (
-        <div className="container mx-auto p-6">
-            <Head title="Home" />
-            <h1 className="text-3xl font-bold text-center mb-6">{translate('welcome')} School Finder</h1>
-            <form onSubmit={handleSearch} className="bg-white shadow-md rounded-lg p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">{translate('name')}</label>
-                        <input
-                            type="text"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            placeholder={translate('name')}
-                            className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">{translate('region')}</label>
-                        <select
-                            value={data.region}
-                            onChange={(e) => setData('region', e.target.value)}
-                            className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Select {translate('region')}</option>
-                            {regions.map((region, index) => (
-                                <option key={index} value={region.id}>
-                                    {region.name} {/* Assuming 'name' is the property for region */}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">{translate('type')}</label>
-                        <select
-                            value={data.type}
-                            onChange={(e) => setData('type', e.target.value)}
-                            className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Select {translate('type')}</option>
-                            {types.map((type, index) => (
-                                <option key={index} value={type.id}>
-                                    {getLocalizedValue(type, 'name')} {/* Assuming 'name_en' or 'name_sw' */}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">{translate('gender')}</label>
-                        <select
-                            value={data.gender}
-                            onChange={(e) => setData('gender', e.target.value)}
-                            className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Select {translate('gender')}</option>
-                            {genders.map((gender, index) => (
-                                <option key={index} value={gender.id}>
-                                    {getLocalizedValue(gender, 'name')} {/* Assuming 'name_en' or 'name_sw' */}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">{translate('level')}</label>
-                        <select
-                            value={data.level}
-                            onChange={(e) => setData('level', e.target.value)}
-                            className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Select {translate('level')}</option>
-                            {levels.map((level, index) => (
-                                <option key={index} value={level.id}>
-                                    {getLocalizedValue(level, 'name')} {/* Assuming 'name_en' or 'name_sw' */}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">{translate('category')}</label>
-                        <select
-                            value={data.category}
-                            onChange={(e) => setData('category', e.target.value)}
-                            className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Select {translate('category')}</option>
-                            {categories.map((category, index) => (
-                                <option key={index} value={category.id}>
-                                    {getLocalizedValue(category, 'name')} {/* Assuming 'name_en' or 'name_sw' */}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-
-                <button
-                    type="submit"
-                    disabled={processing}
-                    className="bg-blue-500 text-white font-bold py-2 px-4 mt-4 rounded-lg hover:bg-blue-600 transition duration-200"
-                >
-                    {processing ? translate('searching') : translate('search')}
-                </button>
-            </form>
+  return (
+    <div>
+      <Head title={translate('home')} />
+      
+      {/* Hero Section */}
+      <div className="bg-indigo-700 text-white rounded-xl shadow-lg mb-10 overflow-hidden">
+        <div className="px-8 py-12 md:px-12 md:py-16 max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            {translate('welcome')} <span className="text-yellow-300">School Finder</span>
+          </h1>
+          <p className="text-lg md:text-xl opacity-90 mb-6">
+            Find the perfect school for your educational journey with our comprehensive search tool.
+          </p>
         </div>
-    );
+      </div>
+      
+      {/* Search Form */}
+      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          {translate('search')} {language === 'en' && translate('for')} {translate('schools')}
+        </h2>
+        
+        <form onSubmit={handleSearch} className="space-y-6">
+          {/* School Name */}
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+            <label className="block text-gray-700 font-medium mb-2">
+              {translate('name')}
+            </label>
+            <input
+              type="text"
+              value={data.name}
+              onChange={(e) => setData('name', e.target.value)}
+              placeholder={`${translate('enter')} ${translate('name')}...`}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+            />
+          </div>
+          
+          {/* Filter Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {/* Region */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <label className="block text-gray-700 font-medium mb-2">
+                {translate('region')}
+              </label>
+              <div className="relative">
+                <select
+                  value={data.region}
+                  onChange={(e) => setData('region', e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pr-8 transition-all duration-200"
+                >
+                  <option value="">{translate('select')} {translate('region')}</option>
+                  {regions.map((region, index) => (
+                    <option key={index} value={region.id}>
+                      {region.name}
+                    </option>
+                  ))}
+                </select>
+               
+              </div>
+            </div>
+
+            {/* Type */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <label className="block text-gray-700 font-medium mb-2">
+                {translate('type')}
+              </label>
+              <div className="relative">
+                <select
+                  value={data.type}
+                  onChange={(e) => setData('type', e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pr-8 transition-all duration-200"
+                >
+                  <option value="">{translate('select')} {translate('type')}</option>
+                  {types.map((type, index) => (
+                    <option key={index} value={type.id}>
+                      {getLocalizedValue(type, 'name')}
+                    </option>
+                  ))}
+                </select>
+                
+              </div>
+            </div>
+
+            {/* Gender */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <label className="block text-gray-700 font-medium mb-2">
+                {translate('gender')}
+              </label>
+              <div className="relative">
+                <select
+                  value={data.gender}
+                  onChange={(e) => setData('gender', e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pr-8 transition-all duration-200"
+                >
+                  <option value="">{translate('select')} {translate('gender')}</option>
+                  {genders.map((gender, index) => (
+                    <option key={index} value={gender.id}>
+                      {getLocalizedValue(gender, 'name')}
+                    </option>
+                  ))}
+                </select>
+                
+              </div>
+            </div>
+
+            {/* Level */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <label className="block text-gray-700 font-medium mb-2">
+                {translate('level')}
+              </label>
+              <div className="relative">
+                <select
+                  value={data.level}
+                  onChange={(e) => setData('level', e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pr-8 transition-all duration-200"
+                >
+                  <option value="">{translate('select')} {translate('level')}</option>
+                  {levels.map((level, index) => (
+                    <option key={index} value={level.id}>
+                      {getLocalizedValue(level, 'name')}
+                    </option>
+                  ))}
+                </select>
+                
+              </div>
+            </div>
+
+            {/* Category */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <label className="block text-gray-700 font-medium mb-2">
+                {translate('category')}
+              </label>
+              <div className="relative">
+                <select
+                  value={data.category}
+                  onChange={(e) => setData('category', e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pr-8 transition-all duration-200"
+                >
+                  <option value="">{translate('select')} {translate('category')}</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category.id}>
+                      {getLocalizedValue(category, 'name')}
+                    </option>
+                  ))}
+                </select>
+                
+              </div>
+            </div>
+          </div>
+          
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-8">
+            <button
+              type="submit"
+              disabled={processing}
+              className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center"
+            >
+              {processing ? (
+                <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              )}
+              {processing ? translate('searching') : translate('search')}
+            </button>
+            
+            <button
+              type="button"
+              onClick={handleClear}
+              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              {translate('clear')}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default Home;

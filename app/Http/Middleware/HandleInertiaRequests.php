@@ -36,4 +36,18 @@ class HandleInertiaRequests extends Middleware
             ],
         ];
     }
+
+     /**
+     * Handle the Inertia error response.
+     *
+     * @param Request $request
+     * @param int $status
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderErrorResponse(Request $request, int $status)
+    {
+        return inertia('Error', [
+            'status' => $status
+        ]);
+    }
 }
