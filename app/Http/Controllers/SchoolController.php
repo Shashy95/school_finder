@@ -71,7 +71,7 @@ class SchoolController extends Controller
     public function show($slug)
     {
         // Check if the identifier is a UUID or a slug
-        $school = School::where('slug', $slug)->firstOrFail();
+        $school = School::with(['region', 'category', 'type', 'gender', 'level'])->where('slug', $slug)->firstOrFail();
         return Inertia::render('Schools/Detail', ['school' => $school]);
     }
    

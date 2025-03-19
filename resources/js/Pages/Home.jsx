@@ -1,10 +1,13 @@
 // Home.jsx
 import React, { useEffect } from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm,usePage } from '@inertiajs/react';
 import { useLanguage } from '@/Components/LanguageContext';
 
 const Home = ({ regions, genders, levels, types, categories }) => {
-  const { language, translate } = useLanguage();
+  const { translate } = useLanguage();
+
+  const { props } = usePage();
+  const language = props.locale || 'en';
 
   const { data, setData, get, processing } = useForm({
     name: '',

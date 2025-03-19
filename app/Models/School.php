@@ -13,6 +13,35 @@ class School extends Model
     
     protected $guarded = ['id'];
 
+
+    protected $casts = [
+        'levels_with_subjects' => 'array',
+    ];
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
+    }
+
+    public function level()
+    {
+        return $this->belongsTo(Level::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

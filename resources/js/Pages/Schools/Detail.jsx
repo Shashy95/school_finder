@@ -3,19 +3,23 @@ import { Head, Link } from '@inertiajs/react';
 import { useLanguage } from '@/Components/LanguageContext';
 
 const SchoolDetails = ({ school }) => {
-    const { translate } = useLanguage();
+    const { language,translate } = useLanguage();
     const [activeTab, setActiveTab] = useState('overview');
     const [menuOpen, setMenuOpen] = useState(false);
 
+    const description = language === 'sw' ? school.sw_description : school.en_description;
+
+
+    // For fields that reference other tables, we'll need to access them properly
+    const regionName = school.region?.name || '';
+    const categoryName = language === 'sw' ? school.category?.name_sw : school.category?.name_en;
+    const genderName = language === 'sw' ? school.gender?.name_sw : school.gender?.name_en;
+    const levelName = language === 'sw' ? school.level?.name_sw : school.level?.name_en;
+    const typeName = language === 'sw' ? school.type?.name_sw : school.type?.name_en;
+
     const {
         name,
-        description,
-        region,
         location,
-        type,
-        gender,
-        level,
-        category,
         phone,
         email,
         website,
@@ -59,33 +63,37 @@ const SchoolDetails = ({ school }) => {
                 <div className="h-48 bg-gradient-to-r from-indigo-600 to-indigo-800 relative">
                     <div className="absolute inset-0 bg-black opacity-20"></div>
                     <div className="absolute bottom-0 left-0 p-6 text-white">
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                            {type && (
-                                <span className="bg-indigo-800 bg-opacity-70 px-3 py-1 rounded-full text-sm font-semibold">
-                                    {type}
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                            {typeName && (
+                                <span className="bg-indigo-800 bg-opacity-80 px-3 py-1 rounded-full text-sm font-semibold truncate max-w-[150px] sm:max-w-none">
+                                    {typeName}
                                 </span>
                             )}
-                            {gender && (
-                                <span className="bg-indigo-800 bg-opacity-70 px-3 py-1 rounded-full text-sm font-semibold">
-                                    {gender}
+                            {genderName && (
+                                <span className="bg-indigo-800 bg-opacity-80 px-3 py-1 rounded-full text-sm font-semibold truncate max-w-[150px] sm:max-w-none">
+                                    {genderName}
                                 </span>
                             )}
-                            {level && (
-                                <span className="bg-indigo-800 bg-opacity-70 px-3 py-1 rounded-full text-sm font-semibold">
-                                    {level}
+                            {levelName && (
+                                <span className="bg-indigo-800 bg-opacity-80 px-3 py-1 rounded-full text-sm font-semibold truncate max-w-[150px] sm:max-w-none">
+                                    {levelName}
                                 </span>
                             )}
                         </div>
                         <h1 className="text-2xl sm:text-3xl font-bold">{name}</h1>
-                        {location && (
-                            <div className="flex items-center mt-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <span>{location}</span>
-                            </div>
-                        )}
+                        {(location || regionName) && (
+                        <div className="flex items-center mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>
+                                {location}
+                                {location && regionName && <span className="mx-1">•</span>}
+                                {regionName && <span className="text-gray-300">{regionName}</span>}
+                            </span>
+                        </div>
+                    )}
                     </div>
                 </div>
                 
@@ -119,7 +127,7 @@ const SchoolDetails = ({ school }) => {
                             </div>
                             <div className="ml-3">
                                 <h3 className="text-sm font-medium text-gray-500">{translate('category')}</h3>
-                                <p className="text-gray-800">{category || translate('notAvailable')}</p>
+                                <p className="text-gray-800">{categoryName || translate('notAvailable')}</p>
                             </div>
                         </div>
                         
@@ -239,7 +247,7 @@ const SchoolDetails = ({ school }) => {
                                         </div>
                                     )}
                                     
-                                    {type && (
+                                    {typeName && (
                                         <div className="flex items-start">
                                             <div className="bg-gray-100 rounded-full p-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -248,12 +256,12 @@ const SchoolDetails = ({ school }) => {
                                             </div>
                                             <div className="ml-3">
                                                 <h4 className="text-sm font-medium text-gray-500">{translate('type')}</h4>
-                                                <p className="text-gray-800">{type}</p>
+                                                <p className="text-gray-800">{typeName}</p>
                                             </div>
                                         </div>
                                     )}
                                     
-                                    {gender && (
+                                    {genderName && (
                                         <div className="flex items-start">
                                             <div className="bg-gray-100 rounded-full p-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -262,7 +270,7 @@ const SchoolDetails = ({ school }) => {
                                             </div>
                                             <div className="ml-3">
                                                 <h4 className="text-sm font-medium text-gray-500">{translate('gender')}</h4>
-                                                <p className="text-gray-800">{gender}</p>
+                                                <p className="text-gray-800">{genderName}</p>
                                             </div>
                                         </div>
                                     )}
@@ -308,7 +316,7 @@ const SchoolDetails = ({ school }) => {
                                         
                                         {/* Rating Categories */}
                                         {ratings.categories && Object.entries(ratings.categories).map(([category, value]) => (
-                                            <div key={category} className="mb-2">
+                                            <div key={categoryName} className="mb-2">
                                                 <div className="flex justify-between text-sm mb-1">
                                                     <span className="text-gray-600">{translate(category)}</span>
                                                     <span className="font-medium">{value}/5</span>

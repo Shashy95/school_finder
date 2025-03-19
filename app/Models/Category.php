@@ -8,4 +8,9 @@ class Category extends Model
 {
     //
     protected $guarded = ['id'];
+    
+    public function schools()
+    {
+        return $this->hasMany(School::class);
+    }
 }

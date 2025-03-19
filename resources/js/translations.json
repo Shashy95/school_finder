@@ -63,6 +63,19 @@
     "adminDashboard": "Admin Dashboard",
     "logout": "Logout",
     "goBackHome": "Go back home",
+    "selectRegion": "Select Region",
+    "selectCategory": "Select Category",
+    "selectType": "Select Type",
+    "selectGender": "Select Gender",
+    "selectLevel": "Select Level",
+    "levelsWithSubjects": "Levels with Subjects",
+    "enDescription": "English Description",
+    "swDescription": "Swahili Description",
+    "socialMediaLinks": "Social Media Links",
+    "phone": "Phone",
+    "email": "Email",
+    "save": "Save",
+    "saving": "Saving...",
 
     "pageNotFoundTitle": "Page Not Found",
   "pageNotFound": "We couldn't find the page you were looking for.",
@@ -89,7 +102,12 @@
   "serverErrorTitle": "Server Error",
   "serverError": "Sorry, something went wrong on our servers.",
   "serverErrorDesc": "We're working on fixing the problem. Please try again later.",
-  "tryAgain": "Try Again"
+  "tryAgain": "Try Again",
+      "schoolCreatedSuccessfully": "School created successfully!",
+    "schoolCreationFailed": "Failed to create school. Please try again.",
+    "areYouSureDeleteSchool": "Are you sure you want to delete this school?",
+    "schoolDeletedSuccessfully": "School deleted successfully!",
+    "schoolDeletionFailed": "Failed to delete school. Please try again."
 
     },
     "sw": {
@@ -155,6 +173,20 @@
     "adminDashboard": "Dashibodi ya Msimamizi",
     "logout": "Ondoka",
     "goBackHome": "Rudi nyumbani",
+    "selectRegion": "Chagua Mkoa",
+    "selectCategory": "Chagua Kategoria",
+    "selectType": "Chagua Aina",
+    "selectGender": "Chagua Jinsia",
+    "selectLevel": "Chagua Kiwango",
+    "levelsWithSubjects": "Viwango na Masomo",
+    "enDescription": "Maelezo kwa Kiingereza",
+    "swDescription": "Maelezo kwa Kiswahili",
+
+    "socialMediaLinks": "Viungo vya Mitandao ya Kijamii",
+    "phone": "Simu",
+    "email": "Barua Pepe",
+    "save": "Hifadhi",
+    "saving": "Inahifadhi...",
 
    "pageNotFoundTitle": "Ukurasa Haujapatikana",
   "pageNotFound": "Hatukuweza kupata ukurasa unaoutafuta.",
@@ -180,7 +212,12 @@
   "serverErrorTitle": "Hitilafu ya Seva",
   "serverError": "Samahani, kuna hitilafu kwenye seva zetu.",
   "serverErrorDesc": "Tunafanya kazi kurekebisha tatizo. Tafadhali jaribu tena baadaye.",
-  "tryAgain": "Jaribu Tena"
+  "tryAgain": "Jaribu Tena",
+   "schoolCreatedSuccessfully": "Shule imeundwa kikamilifu!",
+    "schoolCreationFailed": "Imeshindwa kuunda shule. Tafadhali jaribu tena.",
+    "areYouSureDeleteSchool": "Una uhakika unataka kufuta shule hii?",
+    "schoolDeletedSuccessfully": "Shule imefutwa kikamilifu!",
+    "schoolDeletionFailed": "Imeshindwa kufuta shule. Tafadhali jaribu tena."
 
 
 
