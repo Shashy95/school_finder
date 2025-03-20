@@ -16,11 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => Hash::make("password"),
-        ]);
+        User::firstOrCreate(
+            ['email' => 'test@example.com'], // Condition to check if the user exists (e.g., by email)
+            [
+                'name' => 'Test User',
+                'password' => Hash::make('password'),
+            ]
+        );
 
         $this->call(CategoryTableSeeder::class);
         $this->call(LevelTableSeeder::class);
