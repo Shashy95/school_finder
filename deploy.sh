@@ -1,5 +1,5 @@
 # Run Database Migrations
-php artisan migrate
+php artisan migrate --force
 
 #Run seeders
-php artisan db:seed
+php artisan db:seed --force
