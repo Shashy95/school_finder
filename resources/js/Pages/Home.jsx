@@ -1,13 +1,17 @@
 // Home.jsx
-import React, { useEffect } from 'react';
+import React, {useState, useEffect } from 'react';
 import { Head, useForm,usePage } from '@inertiajs/react';
 import { useLanguage } from '@/Components/LanguageContext';
+import Loader from '@/Components/Loader';
 
 const Home = ({ regions, genders, levels, types, categories }) => {
   const { translate } = useLanguage();
 
   const { props } = usePage();
   const language = props.locale || 'en';
+
+  const [isLoading, setIsLoading] = useState(true); // For page load
+  const [isSearching, setIsSearching] = useState(false); // For search action
 
   const { data, setData, get, processing } = useForm({
     name: '',
@@ -18,13 +22,29 @@ const Home = ({ regions, genders, levels, types, categories }) => {
     category: ''
   });
 
+    // Simulate page load
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 1000); // Adjust time as needed
+      
+      return () => clearTimeout(timer);
+    }, []);
+
   const getLocalizedValue = (item, field) => {
     return language === 'sw' ? item[`${field}_sw`] : item[`${field}_en`];
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    get('/schools'); // Redirects to search results page
+    setIsSearching(true);
+    
+    get('/schools', {
+      preserveState: false,
+      onFinish: () => {
+        setIsSearching(false);
+      }
+    });
   };
 
   const handleClear = () => {
@@ -38,9 +58,16 @@ const Home = ({ regions, genders, levels, types, categories }) => {
     });
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <div>
       <Head title={translate('home')} />
+
+       {/* Show loader when searching */}
+       {isSearching && <Loader />}
       
       {/* Hero Section */}
       <div className="bg-indigo-700 text-white rounded-xl shadow-lg mb-10 overflow-hidden">

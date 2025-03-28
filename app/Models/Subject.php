@@ -8,4 +8,9 @@ class Subject extends Model
 {
     //
     protected $guarded = ['id'];
+
+    public function levels()
+    {
+        return $this->belongsToMany(Level::class, 'level_subject');
+    }
 }

@@ -2,8 +2,9 @@ import React, { useState, useMemo } from 'react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import DataTable from 'react-data-table-component';
 import { useLanguage } from '@/Components/LanguageContext';
-import { Link } from '@inertiajs/react';
+import { useForm,Head, Link } from '@inertiajs/react';
 import { PlusCircle, Search, Filter, Edit, Trash } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const SchoolIndex = ({ schools }) => {
     const { translate, language } = useLanguage();
@@ -17,17 +18,39 @@ const SchoolIndex = ({ schools }) => {
         region: ''
     });
 
+    // Add Inertia form helper
+    const { delete: destroy } = useForm();
+
     const handleDelete = (id) => {
-        if (confirm(translate('areYouSureDeleteSchool'))) {
-            axios.delete(route('admin.schools.destroy', id))
-                .then(() => {
-                    toastr.success(translate('schoolDeletedSuccessfully'));
-                    window.location.reload();
-                })
-                .catch(() => {
-                    toastr.error(translate('schoolDeletionFailed'));
+        Swal.fire({
+            title: translate('areYouSureDeleteSchool'),
+            text: translate('youWontBeAbleToRevertThis'),
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: translate('yesDeleteIt'),
+            cancelButtonText: translate('cancel'),
+        }).then((result) => {
+            if (result.isConfirmed) {
+                destroy(route('admin.schools.destroy', id), {
+                    onSuccess: () => {
+                        Swal.fire(
+                            translate('deleted'),
+                            translate('schoolDeletedSuccessfully'),
+                            'success'
+                        );
+                    },
+                    onError: () => {
+                        Swal.fire(
+                            translate('error'),
+                            translate('schoolDeletionFailed'),
+                            'error'
+                        );
+                    }
                 });
-        }
+            }
+        });
     };
 
     const handleFilterChange = (key, value) => {
@@ -45,6 +68,13 @@ const SchoolIndex = ({ schools }) => {
                 if (school.region && school.region.name) {
                     values.add(school.region.name);
                 }
+            } else if (field === 'level') {
+                // Handle multiple levels
+                school.levels?.forEach(level => {
+                    if (level[`name_${language}`]) {
+                        values.add(level[`name_${language}`]);
+                    }
+                });
             } else {
                 if (school[field] && school[field][`name_${language}`]) {
                     values.add(school[field][`name_${language}`]);
@@ -61,11 +91,11 @@ const SchoolIndex = ({ schools }) => {
                 school.location.toLowerCase().includes(searchTerm.toLowerCase());
             
             const matchesFilters = 
-                (!filters.level || (school.level && school.level[`name_${language}`] === filters.level)) &&
+                (!filters.level || (school.levels?.some(level => level[`name_${language}`] === filters.level))) &&
                 (!filters.category || (school.category && school.category[`name_${language}`] === filters.category)) &&
                 (!filters.type || (school.type && school.type[`name_${language}`] === filters.type)) &&
                 (!filters.gender || (school.gender && school.gender[`name_${language}`] === filters.gender)) &&
-                (!filters.region || school.region.name === filters.region);
+                (!filters.region || (school.region && school.region.name === filters.region));
             
             return matchesSearch && matchesFilters;
         });
@@ -80,8 +110,18 @@ const SchoolIndex = ({ schools }) => {
         },
         {
             name: translate('level'),
-            selector: row => row.level?.[`name_${language}`] || 'N/A',
+            selector: row => row.levels?.map(level => level[`name_${language}`]).join(', ') || '',
             sortable: true,
+            cell: row => (
+                <div>
+                    {row.levels?.map((level, index) => (
+                        <span key={level.id}>
+                            {level[`name_${language}`]}
+                            {index !== row.levels.length - 1 && ', '}
+                        </span>
+                    ))}
+                </div>
+            ),
         },
         {
             name: translate('category'),
@@ -111,21 +151,18 @@ const SchoolIndex = ({ schools }) => {
         {
             name: translate('actions'),
             cell: row => (
-                <div className="flex"> {/* No space-x class */}
-                    {/* Edit Button with Icon */}
+                <div className="flex">
                     <Link 
                         href={route('admin.schools.edit', row.id)} 
-                        className="px-2 py-1 text-xs font-medium text-blue-600 rounded-md hover:bg-blue-100 flex items-center mr-1" /* Added margin */
+                        className="px-2 py-1 text-xs font-medium text-blue-600 rounded-md hover:bg-blue-100 flex items-center mr-1"
                     >
-                        <Edit size={14} /> {/* Edit icon */}
+                        <Edit size={14} />
                     </Link>
-                
-                    {/* Delete Button with Icon */}
                     <button
                         onClick={() => handleDelete(row.id)}
                         className="px-2 py-1 text-xs font-medium text-red-600 rounded-md hover:bg-red-100 flex items-center"
                     >
-                        <Trash size={14} /> {/* Delete icon */}
+                        <Trash size={14} />
                     </button>
                 </div>
             ),
@@ -133,24 +170,23 @@ const SchoolIndex = ({ schools }) => {
         }
     ];
 
- 
-
     return (
         <AdminLayout title={translate('schools')}>
+            <Head title={translate('manageSchools')} />
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div className="flex flex-col md:flex-row md:items-center justify-between p-6 border-b">
                     <h2 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">{translate('schools')}</h2>
-                    <div className="flex items-center space-x-3">
-                        <button 
+                    <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-3 md:space-y-0">
+                        <button
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
-                            className="px-4 py-2 text-sm border border-gray-300 rounded-md flex items-center hover:bg-gray-50"
+                            className="px-4 py-2 text-sm border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50 w-full md:w-auto"
                         >
                             <Filter size={16} className="mr-2" />
                             {translate('filter')}
                         </button>
-                        <Link 
-                            href={route('admin.schools.create')} 
-                            className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 flex items-center"
+                        <Link
+                            href={route('admin.schools.create')}
+                            className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 flex items-center justify-center w-full md:w-auto"
                         >
                             <PlusCircle size={16} className="mr-2" />
                             {translate('addNewSchool')}
@@ -214,9 +250,9 @@ const SchoolIndex = ({ schools }) => {
                                 {translate('noSchoolsFound')}
                             </div>
                         }
-                       
                         highlightOnHover
                         persistTableHead
+                        
                     />
                 </div>
             </div>

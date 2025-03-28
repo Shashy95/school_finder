@@ -7,15 +7,18 @@ use App\Http\Controllers\SchoolController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 
 Route::get('/', [SchoolController::class, 'index'])->name('home');
 Route::get('/schools', [SchoolController::class, 'list'])->name('schools.list');
 Route::get('/schools/{slug}', [SchoolController::class, 'show'])->name('schools.show');
 
+
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('/schools', AdminSchoolController::class)->names('admin.schools');
+    Route::get('levels/{level}/subjects', [AdminSchoolController::class, 'getSubjectsByLevel']);
 });
 
 /*

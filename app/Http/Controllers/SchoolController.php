@@ -34,45 +34,73 @@ class SchoolController extends Controller
 
     public function list(Request $request)
     {
-        $query = School::query();
-
+        $query = School::query()->with(['levels']); // Eager load levels relationship
+    
         // Apply filters if provided
         if ($request->filled('name')) {
             $query->where('name', 'LIKE', '%' . $request->name . '%');
         }
-
+    
         if ($request->filled('region')) {
             $query->where('region_id', $request->region);
         }
+    
         if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
-
+    
         if ($request->filled('type')) {
             $query->where('type_id', $request->type);
         }
-
+    
         if ($request->filled('gender')) {
             $query->where('gender_id', $request->gender);
         }
-
+    
+        // Updated level filter for many-to-many relationship
         if ($request->filled('level')) {
-            $query->where('level_id', $request->level);
+            $query->whereHas('levels', function($q) use ($request) {
+                $q->where('levels.id', $request->level);
+            });
         }
-
+    
         $schools = $query->paginate(10)->appends($request->query());
-
+    
         return Inertia::render('Schools/List', [
             'schools' => $schools,
             'filters' => $request->all(),
+            
         ]);
     }
 
     public function show($slug)
     {
         // Check if the identifier is a UUID or a slug
-        $school = School::with(['region', 'category', 'type', 'gender', 'level'])->where('slug', $slug)->firstOrFail();
+        $school = School::with(['region', 'category', 'type', 'gender', 'levels'])->where('slug', $slug)->firstOrFail();
         return Inertia::render('Schools/Detail', ['school' => $school]);
     }
+
+
+/**
+     * Handle the request to fetch name suggestions for autosuggestion.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSuggestions(Request $request)
+    {
+        // Validate the input query (ensure it's safe to use)
+        $validated = $request->validate([
+            'name' => 'required|string|min:3', // Minimum 3 characters
+        ]);
+
+        // Fetch suggestions from the School model based on the name
+        $suggestions = School::where('name', 'like', '%' . $validated['name'] . '%')
+            ->limit(10) // Limit the number of suggestions
+            ->get(['name']); // Fetch only the name field (you can adjust this as needed)
+
+        return response()->json($suggestions);
+    }
+
    
 }

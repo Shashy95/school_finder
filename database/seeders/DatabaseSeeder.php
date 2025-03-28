@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+use SubjectAndLevelSubjectSeeder;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -29,5 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GenderTableSeeder::class);
         $this->call(TypeTableSeeder::class);
         $this->call(RegionsTableSeeder::class);
+        $this->call(SubjectSeeder::class);
+        $this->call(LevelSubjectSeeder::class);
     }
 }

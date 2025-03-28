@@ -53,6 +53,8 @@
     "backToResults": "Back to Results",
     "share": "Share",
     "welcomeMessage": "Welcome to the admin dashboard!",
+    "searchSchools": "Search Schools",
+    "manageSchools": "Manage Schools",
     "addNewSchool": "Add New School",
     "actions": "Actions",
     "edit": "Edit",
@@ -76,6 +78,9 @@
     "email": "Email",
     "save": "Save",
     "saving": "Saving...",
+    "saveSchool": "Save School",
+    "updating": "Updating...",
+    "updateSchool": "Update School",
 
     "pageNotFoundTitle": "Page Not Found",
   "pageNotFound": "We couldn't find the page you were looking for.",
@@ -107,7 +112,22 @@
     "schoolCreationFailed": "Failed to create school. Please try again.",
     "areYouSureDeleteSchool": "Are you sure you want to delete this school?",
     "schoolDeletedSuccessfully": "School deleted successfully!",
-    "schoolDeletionFailed": "Failed to delete school. Please try again."
+    "schoolDeletionFailed": "Failed to delete school. Please try again.",
+    "youWontBeAbleToRevertThis": "You won't be able to revert this!",
+    "yesDeleteIt": "Yes, delete it!",
+    "cancel": "Cancel",
+
+    "levelsOffered": "Level Offered",
+    "subjectsOffered": "Subjects Offered",
+    "facilitiesOffered": "Facilities Offered",
+    "school_description": "School Description",
+    "contactInformation": "Contact Information",
+    "enterenDescription": "Enter English Description",
+    "enterswDescription": "Enter Swahili Description",
+    "editSchool": "Edit School",
+    "schoolUpdatedSuccessfully": "School updated successfully!",
+    "schoolUpdateFailed": "Failed to update school. Please try again."
+
 
     },
     "sw": {
@@ -163,6 +183,8 @@
     "backToResults": "Rudi kwenye Matokeo",
     "share": "Shiriki",
     "welcomeMessage": "Karibu kwenye dashibodi ya msimamizi!",
+    "manageSchools": "Simamia Shule",
+    "searchSchools": "Tafuta Shule",
     "addNewSchool": "Ongeza Shule Mpya",
     "actions": "Vitendo",
     "edit": "Hariri",
@@ -170,7 +192,7 @@
     "adminPanel": "Paneli ya Msimamizi",
     "dashboard": "Dashibodi",
     "users": "Watumiaji",
-    "adminDashboard": "Dashibodi ya Msimamizi",
+    "adminDashboard": "Dashibodi",
     "logout": "Ondoka",
     "goBackHome": "Rudi nyumbani",
     "selectRegion": "Chagua Mkoa",
@@ -217,14 +239,30 @@
     "schoolCreationFailed": "Imeshindwa kuunda shule. Tafadhali jaribu tena.",
     "areYouSureDeleteSchool": "Una uhakika unataka kufuta shule hii?",
     "schoolDeletedSuccessfully": "Shule imefutwa kikamilifu!",
-    "schoolDeletionFailed": "Imeshindwa kufuta shule. Tafadhali jaribu tena."
-
-
-
-
-  
+    "schoolDeletionFailed": "Imeshindwa kufuta shule. Tafadhali jaribu tena.",
+    "youWontBeAbleToRevertThis": "Hautaweza kurejesha hii!",
+    "yesDeleteIt": "Ndio, futa!",
+    "cancel": "Ghairi",
 
     
+      "levelsOffered": "Viwango Vinavyotolewa",
+      "subjectsOffered": "Masomo Yanayotolewa",
+      "facilitiesOffered": "Mazingira Yanayotolewa",
+      "school_description": "Maelezo ya Shule",
+      "contactInformation": "Taarifa za Mawasiliano",
+      "enterenDescription": "Ingiza Maelezo kwa Kiingereza",
+      "enterswDescription": "Ingiza Maelezo kwa Kiswahili",
+      "editSchool": "Hariri Shule",
+      "schoolUpdatedSuccessfully": "Shule imesasishwa kwa mafanikio!",
+      "schoolUpdateFailed": "Imeshindikana kusasisha shule. Tafadhali jaribu tena.",
+      "saveSchool": "Hifadhi Shule",
+      "updating": "Inasasisha...",
+      "updateSchool": "Sasisha Shule"
+  
+  
+ 
       
     }
+
+
   }

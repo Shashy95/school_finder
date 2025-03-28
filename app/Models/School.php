@@ -37,10 +37,17 @@ class School extends Model
         return $this->belongsTo(Gender::class);
     }
 
-    public function level()
-    {
-        return $this->belongsTo(Level::class);
-    }
+ // app/Models/School.php
+public function levels()
+{
+    return $this->belongsToMany(Level::class, 'school_levels');
+}
+
+public function subjects()
+{
+    return $this->belongsToMany(Subject::class, 'school_subjects')
+                ->withPivot('level_id');
+}
 
     protected static function boot()
     {

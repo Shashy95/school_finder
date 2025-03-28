@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { useLanguage } from '@/Components/LanguageContext';
+import Loader from '@/Components/Loader';
 
 const SearchResults = ({ schools, filters }) => {
     const { translate } = useLanguage();
+    
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }, []);
+  
+    if (isLoading) {
+      return <Loader />;
+    }
 
     return (
         <div className="container mx-auto p-6">
