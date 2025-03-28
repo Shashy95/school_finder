@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id(); // Auto-incrementing ID
             $table->string('name_en'); // Name in English
             $table->string('name_sw'); // Name in Swahili
-            $table->foreignId('level_id')->constrained()->onDelete('cascade'); // Foreign key to levels table
             $table->timestamps(); // Created at and updated at timestamps
         });
     }
