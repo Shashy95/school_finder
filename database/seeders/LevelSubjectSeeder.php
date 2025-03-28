@@ -2,17 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\Level;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Subject;
-use App\Models\level;
+
 
 class levelSubjectSeeder extends Seeder
 {
     public function run()
     {
         // Get all levels and subjects by name
-        $levels = level::pluck('id', 'name_en')->all();
+        $levels = Level::pluck('id', 'name_en')->all();
         $subjects = Subject::pluck('id', 'name_en')->all();
 
         // Define all level-subject relationships
