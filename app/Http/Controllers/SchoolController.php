@@ -81,26 +81,15 @@ class SchoolController extends Controller
     }
 
 
-/**
-     * Handle the request to fetch name suggestions for autosuggestion.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getSuggestions(Request $request)
+    public function suggest(Request $request)
     {
-        // Validate the input query (ensure it's safe to use)
-        $validated = $request->validate([
-            'name' => 'required|string|min:3', // Minimum 3 characters
-        ]);
+        $query = $request->query('query');
+        
+        $schools = School::where('name', 'LIKE', "%{$query}%")
+                         ->take(10)
+                         ->get(['id', 'name']);
 
-        // Fetch suggestions from the School model based on the name
-        $suggestions = School::where('name', 'like', '%' . $validated['name'] . '%')
-            ->limit(10) // Limit the number of suggestions
-            ->get(['name']); // Fetch only the name field (you can adjust this as needed)
-
-        return response()->json($suggestions);
+        return response()->json($schools);
     }
-
    
 }

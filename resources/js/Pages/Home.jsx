@@ -1,17 +1,18 @@
-// Home.jsx
-import React, {useState, useEffect } from 'react';
-import { Head, useForm,usePage } from '@inertiajs/react';
+import React, { useState, useEffect } from 'react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { useLanguage } from '@/Components/LanguageContext';
 import Loader from '@/Components/Loader';
+import axios from 'axios';
 
 const Home = ({ regions, genders, levels, types, categories }) => {
   const { translate } = useLanguage();
-
   const { props } = usePage();
   const language = props.locale || 'en';
 
-  const [isLoading, setIsLoading] = useState(true); // For page load
-  const [isSearching, setIsSearching] = useState(false); // For search action
+  const [isLoading, setIsLoading] = useState(true); // Page load state
+  const [isSearching, setIsSearching] = useState(false); // Search state
+  const [suggestions, setSuggestions] = useState([]); // Autocomplete suggestions
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const { data, setData, get, processing } = useForm({
     name: '',
@@ -22,14 +23,13 @@ const Home = ({ regions, genders, levels, types, categories }) => {
     category: ''
   });
 
-    // Simulate page load
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 1000); // Adjust time as needed
-      
-      return () => clearTimeout(timer);
-    }, []);
+  // Simulate page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const getLocalizedValue = (item, field) => {
     return language === 'sw' ? item[`${field}_sw`] : item[`${field}_en`];
@@ -38,7 +38,7 @@ const Home = ({ regions, genders, levels, types, categories }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     setIsSearching(true);
-    
+
     get('/schools', {
       preserveState: false,
       onFinish: () => {
@@ -56,6 +56,25 @@ const Home = ({ regions, genders, levels, types, categories }) => {
       level: '',
       category: ''
     });
+    setSuggestions([]);
+    setShowSuggestions(false);
+  };
+
+  // Fetch suggestions when user types
+  const fetchSuggestions = async (query) => {
+    if (query.length < 2) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    
+    try {
+      const response = await axios.get(`/api/school-suggestions?query=${query}`);
+      setSuggestions(response.data);
+      setShowSuggestions(true);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
   };
 
   if (isLoading) {
@@ -66,11 +85,10 @@ const Home = ({ regions, genders, levels, types, categories }) => {
     <div>
       <Head title={translate('home')} />
 
-       {/* Show loader when searching */}
-       {isSearching && <Loader />}
-      
-      {/* Hero Section */}
-      <div className="bg-indigo-700 text-white rounded-xl shadow-lg mb-10 overflow-hidden">
+      {isSearching && <Loader />}
+
+       {/* Hero Section */}
+       <div className="bg-indigo-700 text-white rounded-xl shadow-lg mb-10 overflow-hidden">
         <div className="px-8 py-12 md:px-12 md:py-16 max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             {translate('welcome')} <span className="text-yellow-300">School Finder</span>
@@ -80,7 +98,7 @@ const Home = ({ regions, genders, levels, types, categories }) => {
           </p>
         </div>
       </div>
-      
+
       {/* Search Form */}
       <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
@@ -89,24 +107,43 @@ const Home = ({ regions, genders, levels, types, categories }) => {
           </svg>
           {translate('search')} {language === 'en' && translate('for')} {translate('schools')}
         </h2>
-        
+
         <form onSubmit={handleSearch} className="space-y-6">
-          {/* School Name */}
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <label className="block text-gray-700 font-medium mb-2">
-              {translate('name')}
-            </label>
+          {/* School Name Autocomplete */}
+          <div className="relative bg-gray-50 p-4 rounded-lg border border-gray-100">
+            <label className="block text-gray-700 font-medium mb-2">{translate('name')}</label>
             <input
               type="text"
               value={data.name}
-              onChange={(e) => setData('name', e.target.value)}
+              onChange={(e) => {
+                setData('name', e.target.value);
+                fetchSuggestions(e.target.value);
+              }}
               placeholder={`${translate('enter')} ${translate('name')}...`}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
             />
+            
+            {/* Suggestions Dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="absolute z-10 bg-white border border-gray-200 rounded-lg w-full mt-1 shadow-lg">
+                {suggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    className="px-4 py-2 hover:bg-indigo-100 cursor-pointer"
+                    onClick={() => {
+                      setData('name', suggestion.name);
+                      setShowSuggestions(false);
+                    }}
+                  >
+                    {suggestion.name}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          
-          {/* Filter Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+
+           {/* Filter Grid */}
+           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {/* Region */}
             <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
               <label className="block text-gray-700 font-medium mb-2">
@@ -218,6 +255,7 @@ const Home = ({ regions, genders, levels, types, categories }) => {
             </div>
           </div>
           
+
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-8">
             <button

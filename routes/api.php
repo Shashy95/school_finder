@@ -8,4 +8,4 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/suggestions', [SchoolController::class, 'getSuggestions']);
+Route::get('/school-suggestions', [SchoolController::class, 'suggest']);
