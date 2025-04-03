@@ -4,8 +4,11 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useLanguage } from '@/Components/LanguageContext';
 
 export default function Register() {
+    const { translate } = useLanguage();
+    
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -22,12 +25,12 @@ export default function Register() {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Register" />
+        <GuestLayout title={translate('register')}>
+            <Head title={translate('register')} />
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value={translate('name')} />
 
                     <TextInput
                         id="name"
@@ -44,7 +47,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value={translate('email')} />
 
                     <TextInput
                         id="email"
@@ -61,7 +64,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value={translate('password')} />
 
                     <TextInput
                         id="password"
@@ -80,7 +83,7 @@ export default function Register() {
                 <div className="mt-4">
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value={translate('confirmPassword')}
                     />
 
                     <TextInput
@@ -102,17 +105,28 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
+                <div className="mt-6">
+                    <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+                        <Link
+                            href={route('login')}
+                            className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                        >
+                            {translate('alreadyRegistered')}
+                        </Link>
+                        
+                        <PrimaryButton 
+                            className="w-full sm:w-auto justify-center" 
+                            disabled={processing}
+                        >
+                            {processing ? (
+                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            ) : null}
+                            {translate('register')}
+                        </PrimaryButton>
+                    </div>
                 </div>
             </form>
         </GuestLayout>

@@ -98,6 +98,16 @@
   "unauthorized": "You need to be logged in to access this page.",
   "unauthorizedDesc": "Please log in with an account that has access to this resource.",
   "login": "Log In",
+
+  "password": "Password",
+  "rememberMe": "Remember me",
+  "forgotPassword": "Forgot your password?",
+  "loginButton": "Log in",
+  "newUser": "Dont have an account?",
+
+  "register": "Register",
+  "confirmPassword": "Confirm Password",
+  "alreadyRegistered": "Already registered?",
   
   "pageExpiredTitle": "Page Expired",
   "pageExpired": "Your session has expired due to inactivity.",
@@ -127,6 +137,7 @@
     "editSchool": "Edit School",
     "schoolUpdatedSuccessfully": "School updated successfully!",
     "schoolUpdateFailed": "Failed to update school. Please try again."
+
 
 
     },
@@ -225,6 +236,16 @@
   "unauthorized": "Unahitaji kuingia ili kufikia ukurasa huu.",
   "unauthorizedDesc": "Tafadhali ingia kwa akaunti iliyo na idhini ya kufikia rasilimali hii.",
   "login": "Ingia",
+
+  "password": "Nenosiri",
+  "rememberMe": "Nikumbuke",
+  "forgotPassword": "Umesahau nenosiri?",
+  "loginButton": "Ingia",
+  "newUser": "Huna akaunti?",
+
+  "register": "Jisajili",
+  "confirmPassword": "Thibitisha Nenosiri",
+  "alreadyRegistered": "Tayari umesajiliwa?",
   
   "pageExpiredTitle": "Ukurasa Umeisha Muda",
   "pageExpired": "Kipindi chako kimeisha kutokana na ukosefu wa shughuli.",

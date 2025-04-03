@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { useLanguage } from '@/Components/LanguageContext';
-import Loader from '@/Components/Loader';
+import SkeletonLoader from '@/Components/SkeletonLoader';
 import axios from 'axios';
 
 const Home = ({ regions, genders, levels, types, categories }) => {
@@ -78,14 +78,14 @@ const Home = ({ regions, genders, levels, types, categories }) => {
   };
 
   if (isLoading) {
-    return <Loader />;
+    return <SkeletonLoader/>;
   }
 
   return (
     <div>
       <Head title={translate('home')} />
 
-      {isSearching && <Loader />}
+      {isSearching && <SkeletonLoader/>}
 
        {/* Hero Section */}
        <div className="bg-indigo-700 text-white rounded-xl shadow-lg mb-10 overflow-hidden">
