@@ -136,7 +136,27 @@
     "enterswDescription": "Enter Swahili Description",
     "editSchool": "Edit School",
     "schoolUpdatedSuccessfully": "School updated successfully!",
-    "schoolUpdateFailed": "Failed to update school. Please try again."
+    "schoolUpdateFailed": "Failed to update school. Please try again.",
+
+    "refreshData": "Refresh Data",
+    "totalSchools": "Total Schools",
+    "schoolsAddedToday": "Added Today",
+    "schoolsAddedThisWeek": "Added This Week",
+    "completionRate": "Completion Rate",
+    "schoolCategoriesBreakdown": "School Categories",
+    "schoolsByGender": "Schools by Gender",
+    "schoolsByLevel": "Schools by Level",
+    "topRegions": "Top Regions by Schools",
+    "profileCompletion": "Profile Completion",
+    "schoolsAddedThisMonth": "Added This Month",
+    "schoolsUpdatedThisMonth": "Updated This Month",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
 
 
 
@@ -278,7 +298,27 @@
       "schoolUpdateFailed": "Imeshindikana kusasisha shule. Tafadhali jaribu tena.",
       "saveSchool": "Hifadhi Shule",
       "updating": "Inasasisha...",
-      "updateSchool": "Sasisha Shule"
+      "updateSchool": "Sasisha Shule",
+
+      "refreshData": "Sasisha Taarifa",
+      "totalSchools": "Jumla ya Shule",
+      "schoolsAddedToday": "Zimeongezwa Leo",
+      "schoolsAddedThisWeek": "Zimeongezwa Wiki Hii",
+      "completionRate": "Kiwango cha Ukamilishaji",
+      "schoolCategoriesBreakdown": "Aina za Shule",
+      "schoolsByGender": "Shule kwa Jinsia",
+      "schoolsByLevel": "Shule kwa Ngazi",
+      "topRegions": "Kanda Zenye Shule Nyingi",
+      "profileCompletion": "Ukamilishaji wa Wasifu",
+      "schoolsAddedThisMonth": "Zimeongezwa Mwezi Huu",
+      "schoolsUpdatedThisMonth": "Zimesasishwa Mwezi Huu",
+      "sunday": "Jumapili",
+      "monday": "Jumatatu",
+      "tuesday": "Jumanne",
+      "wednesday": "Jumatano",
+      "thursday": "Alhamisi",
+      "friday": "Ijumaa",
+      "saturday": "Jumamosi"
   
   
  

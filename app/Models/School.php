@@ -46,7 +46,8 @@ public function levels()
 public function subjects()
 {
     return $this->belongsToMany(Subject::class, 'school_subjects')
-                ->withPivot('level_id');
+                ->withPivot('level_id')
+                ->withTimestamps();
 }
 
     protected static function boot()

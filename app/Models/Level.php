@@ -10,9 +10,10 @@ class Level extends Model
     protected $guarded = ['id'];
 
     public function schools()
-    {
-        return $this->hasMany(School::class);
-    }
+{
+    return $this->belongsToMany(School::class, 'school_levels')
+               ->withTimestamps();
+}
 
     public function subjects()
     {
