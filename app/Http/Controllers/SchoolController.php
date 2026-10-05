@@ -44,7 +44,7 @@ class SchoolController extends Controller
     
         // Build the query based on the filters
         if ($request->filled('name')) {
-            $query->where('name', 'LIKE', '%' . $request->name . '%');
+            $query->where('name', 'ILIKE', '%' . $request->name . '%');
             $filters['name'] = ['id' => null, 'name' => $request->name];
         }
     
@@ -109,7 +109,7 @@ class SchoolController extends Controller
     {
         $query = $request->query('query');
         
-        $schools = School::where('name', 'LIKE', "%{$query}%")
+        $schools = School::where('name', 'ILIKE', "%{$query}%")
                          ->take(10)
                          ->get(['id', 'name']);
 

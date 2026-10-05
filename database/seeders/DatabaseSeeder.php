@@ -33,5 +33,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RegionsTableSeeder::class);
         $this->call(SubjectSeeder::class);
         $this->call(LevelSubjectSeeder::class);
+        $this->call(SchoolSeeder::class);
     }
 }
