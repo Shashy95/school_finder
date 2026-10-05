@@ -1,66 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# School Finder
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A bilingual (English/Swahili) web platform that helps parents and students in Tanzania discover and compare schools by region, level, category, type, and gender, with an admin dashboard for managing school data and tracking search activity.
 
-## About Laravel
+🔗 **Live demo:** https://school-finder-4358faf3d79b.herokuapp.com
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### For visitors
+- **Smart search** by school name with live autocomplete suggestions
+- **Advanced filters:** region, level, category, school type, and gender
+- **Paginated results** with loading skeletons for a smooth experience
+- **School detail pages** (SEO-friendly slug URLs) showing description, location, contact details, website, social links, and the subjects offered at each level
+- **English / Swahili toggle**, with the preference remembered in the browser
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### For administrators
+- **Secure admin area** (authentication via Laravel Breeze)
+- **Full school CRUD:** create, edit, and delete schools, with soft deletes
+- **Dynamic level-to-subject assignment:** subjects load based on the levels selected
+- **Rich-text editor** for English and Swahili descriptions
+- **Analytics dashboard** with charts for:
+  - Total schools and schools added today, this week, and this month
+  - Distribution by category, type, gender, level, and region
+  - Most popular subjects
+  - Data completeness (schools with website, phone, and email)
+  - Popular search criteria and unique visitors (from search logs)
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Layer | Technology |
+|-------|------------|
+| Backend | Laravel 12, PHP 8.2+ |
+| Frontend | React 18 with Inertia.js 2 |
+| Styling | Tailwind CSS, Headless UI |
+| Build tool | Vite |
+| Database | PostgreSQL |
+| Auth | Laravel Breeze, Sanctum |
+| Charts | Chart.js, Recharts |
+| Other | Ziggy (named routes in JS), React Quill, SweetAlert2, React Data Table |
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Data Model
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Schools belong to a **region**, **category**, **type**, and **gender** classification, and have many **levels** and **subjects** (subjects are linked per level through a pivot table). Search activity is stored in `search_logs` to power the admin analytics.
 
-## Laravel Sponsors
+## Getting Started
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prerequisites
+- PHP 8.2+
+- Composer
+- Node.js 18+ and npm
+- PostgreSQL
 
-### Premium Partners
+### Installation
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+# 1. Clone the repository
+git clone <your-repo-url>
+cd school_finder
 
-## Contributing
+# 2. Install dependencies
+composer install
+npm install
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 3. Configure environment
+cp .env.example .env
+php artisan key:generate
+# Set your PostgreSQL credentials (DB_*) in .env
 
-## Code of Conduct
+# 4. Set up the database (runs migrations and seeds regions, levels, subjects, schools)
+php artisan migrate --seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 5. Run the app
+npm run dev          # in one terminal
+php artisan serve    # in another
+```
 
-## Security Vulnerabilities
+Visit `http://localhost:8000`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Admin access
+Register an account at `/register`, then sign in to reach the admin dashboard at `/admin/dashboard`.
+
+## Deployment (Heroku)
+
+The repository includes a `Procfile` and `deploy.sh`. On each release, Heroku runs migrations and seeders, then serves the app from `public/`.
+
+```
+release: bash ./deploy.sh
+web: vendor/bin/heroku-php-apache2 public/
+```
+
+Set `APP_KEY`, `APP_ENV=production`, and your database config vars in Heroku. The `heroku-postbuild` script builds the frontend assets automatically.
+
+
+## Roadmap
+
+- Map view of school locations
+- Reviews and ratings
+- School comparison tool
+- Image galleries for schools
+
+## Author
+
+Built by **Sharon**, Laravel developer.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Open-sourced under the [MIT license](https://opensource.org/licenses/MIT).
